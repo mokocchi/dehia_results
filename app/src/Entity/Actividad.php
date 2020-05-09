@@ -34,6 +34,11 @@ class Actividad
      */
     private $tareas;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $autor;
+
     public function __construct()
     {
         $this->tareas = new ArrayCollection();
@@ -95,6 +100,18 @@ class Actividad
                 $tarea->setActividad(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAutor(): ?string
+    {
+        return $this->autor;
+    }
+
+    public function setAutor(string $autor): self
+    {
+        $this->autor = $autor;
 
         return $this;
     }

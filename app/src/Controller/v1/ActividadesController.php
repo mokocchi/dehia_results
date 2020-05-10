@@ -77,7 +77,7 @@ class ActividadesController extends AbstractFOSRestController
         $actividad->setNombre($data["nombre"]);
         $actividad->setCodigo($data["codigo"]);
 
-        $actividad->setAutor("autorId"); //$autor = $this->getUser()->getGid();
+        $actividad->setAutor($this->getUser()->getGoogleId());
         $em->persist($actividad);
 
         $tareas = $data["tareas"];
@@ -118,9 +118,10 @@ class ActividadesController extends AbstractFOSRestController
             if (array_key_exists("extra", $tareaArray)) {
                 $tarea->setExtra($tareaArray["extra"]);
             }
+            $actividad->addTarea($tarea);
             $em->persist($tarea);
         }
         $em->flush();
-        $this->handleView($this->view($actividad,Response::HTTP_CREATED));
+        $this->handleView($this->view($actividad, Response::HTTP_CREATED));
     }
 }

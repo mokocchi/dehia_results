@@ -122,6 +122,6 @@ class ActividadesController extends AbstractFOSRestController
             $em->persist($tarea);
         }
         $em->flush();
-        $this->handleView($this->view($actividad, Response::HTTP_CREATED));
+        return $this->handleView($this->view($actividad, Response::HTTP_CREATED));
     }
 }

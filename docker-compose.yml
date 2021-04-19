@@ -23,8 +23,6 @@ services:
       dockerfile: docker/php/Dockerfile
     restart: on-failure
     user: ${LOCAL_USER}
-    expose: 
-      - 9000
     networks: 
       dehia:
       backend:
@@ -45,7 +43,7 @@ services:
 
   results.adminer:
     container_name: results.adminer
-    image: adminer
+    image: adminer:4.8.0
     restart: on-failure
     networks: 
       - backend

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200509145338 extends AbstractMigration
+final class Version20210419152126 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -33,7 +33,6 @@ final class Version20200509145338 extends AbstractMigration
         (10,	'GPSInput',	0),
         (11,	'audioInput',	0);
         ");
-
     }
 
     public function down(Schema $schema) : void

@@ -116,6 +116,13 @@ class ResultsController extends AbstractFOSRestController
         $actividad = $this->getDoctrine()->getRepository(Actividad::class)->findOneBy(["codigo" => $code]);
         if (is_null($actividad)) {
             //TODO: get activity from define if not found
+            throw new ApiProblemException(
+                new ApiProblem(
+                    Response::HTTP_FORBIDDEN,
+                    "La actividad aún no fue publicada",
+                    "La actividad aún no fue publicada"
+                )
+            );
         }
         if ($this->getUser()->getGoogleid() !== $actividad->getAutor()) {
             throw new ApiProblemException(

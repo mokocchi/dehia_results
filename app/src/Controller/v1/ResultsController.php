@@ -136,7 +136,7 @@ class ResultsController extends AbstractFOSRestController
 
         $tareas = $actividad->getTareas();
         $nombresTareas = $tareas->map(function ($t) {
-            return $t->getNombre();
+            return ["nombre" => $t->getNombre() , "tipo" => $t->getTipo(), "extra" => $t->getExtra()];
         });
         $results = $this->getResultsFromCollect($code);
 
@@ -155,13 +155,9 @@ class ResultsController extends AbstractFOSRestController
                     $taskEntry = $resps[$tarea->getCodigo()];
                     $tipo = $tarea->getTipo();
                     if ($tipo->getCodigo()) {
-                        //match opciones con Extra
+                        //TODO: match opciones con Extra
                     }
-                    if (is_array($taskEntry)) {
-                        $output = json_encode($taskEntry, JSON_PRETTY_PRINT);
-                    } else {
-                        $output = $taskEntry;
-                    }
+                    $output = $taskEntry;
                     $row[] = $output;
                 } else {
                     $row[] = "<Sin respuesta>";

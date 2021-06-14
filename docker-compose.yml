@@ -23,12 +23,20 @@ services:
       dockerfile: docker/php/Dockerfile
     restart: on-failure
     depends_on: 
-      - results.mysql
+      - ${DATABASE_HOST}
     user: ${LOCAL_USER}
     environment: 
-      WAIT_HOSTS: results.mysql:3306
-      WAIT_SLEEP_INTERVAL: 5
-      WAIT_BEFORE_HOSTS: 5
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST}
+      SITE_BASE_URL: ${SITE_BASE_URL}
+      AUTH_BASE_URL: ${AUTH_BASE_URL}
+      DEFINE_BASE_URL: ${DEFINE_BASE_URL}
+      COLLECT_BASE_URL: ${COLLECT_BASE_URL}
+      WAIT_HOSTS: ${DATABASE_HOST}:3306
+      WAIT_SLEEP_INTERVAL: 10
+      WAIT_BEFORE_HOSTS: 10
       WAIT_TIMEOUT: 350
     networks: 
       dehia:
@@ -38,7 +46,7 @@ services:
 
   results.nginx:
     container_name: results.nginx
-    image: nginx:1.15.3-alpine
+    image: nginx:1.17-alpine
     restart: on-failure
     depends_on:
       - results.php

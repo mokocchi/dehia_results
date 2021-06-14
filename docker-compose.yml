@@ -4,8 +4,6 @@ services:
     container_name: results.mysql
     image: mysql:8.0
     restart: on-failure
-    expose: 
-      - 3306
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -16,15 +14,13 @@ services:
         aliases:
           - results.mysql
 
-  results.php:
-    container_name: results.php
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
+  results.app:
+    container_name: results.app
+    image: mokocchi/dehia-results:latest
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile
     restart: on-failure
-    depends_on: 
-      - ${DATABASE_HOST}
-    user: ${LOCAL_USER}
     environment: 
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -36,34 +32,17 @@ services:
       COLLECT_BASE_URL: ${COLLECT_BASE_URL}
       WAIT_HOSTS: ${DATABASE_HOST}:3306
       WAIT_SLEEP_INTERVAL: 10
-      WAIT_BEFORE_HOSTS: 10
+      WAIT_BEFORE: 10
       WAIT_TIMEOUT: 350
-    networks: 
-      dehia:
-      backend:
-        aliases:
-          - results.php
-
-  results.nginx:
-    container_name: results.nginx
-    image: nginx:1.17-alpine
-    restart: on-failure
-    depends_on:
-      - results.php
-    networks:
-      backend:
-      dehia:
-        aliases:
-          - results.nginx
-
-  results.adminer:
-    container_name: results.adminer
-    image: adminer:4.8.0
-    restart: on-failure
     depends_on: 
-      - results.mysql
+      - ${DATABASE_HOST}
+    expose:
+      - 80
     networks: 
-      - backend
+      backend:
+      dehia:
+        aliases:
+          - results.app
 
 networks:
   dehia:

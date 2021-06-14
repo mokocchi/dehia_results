@@ -12,12 +12,19 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Log\LoggerInterface;
 
 /**
  * @Route("/resultados")
  */
 class ResultsController extends AbstractFOSRestController
 {
+    private $logger;
+    
+    public function __construct(LoggerInterface $logger) {
+        $this->logger = $logger;
+    }
+    
     private function verifyCode($code)
     {
         if ((strlen($code) !== 64) || (preg_match("/[0-9a-z]/", $code) !== 1)) {
